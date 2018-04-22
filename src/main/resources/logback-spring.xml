@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration
+    xmlns="http://ch.qos.logback/xml/ns/logback"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback https://raw.githubusercontent.com/enricopulatzo/logback-XSD/master/src/main/xsd/logback.xsd">
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender" >
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{X-B3-TraceId},%X{X-B3-SpanId},%X{X-Span-Name},%X{lgh-name}] %logger{50}:  %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="gelf" class="biz.paluch.logging.gelf.logback.GelfLogbackAppender">
+        <host>udp:ce6.midea.com</host>
+        <port>12201</port>
+        <version>1.1</version>
+        <originHost>jMacBookPro</originHost>
+        <facility>springcloud_sleuth_trace1</facility>
+        <extractStackTrace>true</extractStackTrace>
+        <mdcProfiling>true</mdcProfiling>
+        <timestampPattern>yyyy-MM-dd HH:mm:ss,SSSS</timestampPattern>
+        <maximumMessageSize>8192</maximumMessageSize>
+        <additionalFields>environment=DEV</additionalFields>
+        <includeFullMdc>true</includeFullMdc>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="gelf" />
+    </root>
+</configuration>

@@ -1,5 +1,6 @@
 package lgh.springcloud.sleuth.trace1.controller;
 
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,8 @@ public class TestController {
 	
 	@RequestMapping(value="/trace-1", method=RequestMethod.GET)
 	public String trace() {
+		MDC.put("profiling.requestStart.millis", String.valueOf(System.currentTimeMillis()));
+		MDC.put("lgh-name", "JohnsonLau");
 		log.info("=== call trace-1 ===");
 		return restTemplate.getForEntity("http://trace-2/trace-2", String.class).getBody();
 	}
