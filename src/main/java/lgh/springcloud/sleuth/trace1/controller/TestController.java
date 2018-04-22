@@ -17,10 +17,18 @@ public class TestController {
 	
 	@RequestMapping(value="/trace-1", method=RequestMethod.GET)
 	public String trace() {
-		MDC.put("profiling.requestStart.millis", String.valueOf(System.currentTimeMillis()));
-		MDC.put("lgh-name", "JohnsonLau");
 		log.info("=== call trace-1 ===");
 		return restTemplate.getForEntity("http://trace-2/trace-2", String.class).getBody();
 	}
+
+	@RequestMapping("/first")  
+    public Object first() {  
+        return "first controller";  
+    }  
+  
+    @RequestMapping("/doError")  
+    public Object error() {  
+        return 1 / 0;  
+    }  
 
 }
